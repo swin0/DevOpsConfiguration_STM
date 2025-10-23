@@ -1,0 +1,27 @@
+\chapter{Project Proposal \\
+\small{\textit{-- Tamara Gonzalez Ibarra, Michelle Elias Flores, Sydney Winstead}}
+\index{Project Proposal} 
+\index{Chapter!itProjectProposal}
+\label{Chapter::itProjectProposal}}
+
+\section{Project Description}
+Our group project for DevOps Principles and Practices is a web-based endless runner game called \textbf{Everscape}. The player will control a character that runs infinitely through a side-scrolling environment, avoiding increasingly challenging obstacles, and collecting doubloons for bonus points. Users will compete for high scores, which will be securely stored in a backend database. Application security (e.g., preventing score tampering) and pipeline security (e.g., scanning Docker images) will be a focus.
+The project aims not only at delivering an engaging and aesthetically pleasing gaming experience but also to integrate DevSecOps practices throughout the development lifecycle. 
+
+\section{Sample Tasks}
+\textbf{Game Development}
+\begin{itemize}
+    \item Build the endless runner game logic (jumping, collision detection, scoring).
+    \item Create a frontend interface for the player.
+    \item Develop a backend service for storing scores.
+\end{itemize}
+\textbf{DevSecOps Integration}
+\begin{itemize}
+    \item Source Control: Github for version control, pull requests, and branching.
+    \item Containerization: Docker to containerize the frontend, backend, and database services.
+    \item Databases: Deploy a lightweight containerized database (e.g., MySQL) for  scores.
+    \item Testing: Write unit tests (e.g., collision detection, score validation) and integration tests (e.g., API endpoints).
+    \item CI/CD Pipeline: Set up GitHub Actions to build, test, and deploy containers automatically.
+    \item Hosting: Deploy to a containerized environment (AWS ECS or Docker Compose locally).
+\end{itemize}
+

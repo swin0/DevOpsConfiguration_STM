@@ -1,0 +1,87 @@
+\chapter{Bugzilla Docker \\
+\small{\textit{-- Tamara Gonzalez Ibarra, Sydney Winstead, Michelle Elias Flores}}
+\index{itBugzillaDocker} 
+\index{Chapter!itBugzillaDocker}
+}
+\label{Chapter::itBugzillaDocker}
+
+\section{Overview}
+This report outlines the process of setting up a \textbf{Bugzilla Docker container} on a DigitalOcean droplet. The setup included creating a droplet with Docker preinstalled, connecting via SSH, configuring Bugzilla using Docker Compose, and verifying that the Bugzilla instance was running successfully.
+
+\section{DigitalOcean Droplet Configuration}
+
+A new DigitalOcean droplet was created using the official \textbf{Docker 1-Click App}.  
+After creation, we set up an SSH key for secure access and connected using:
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+ssh root@167.99.121.94
+\end{minted}
+
+Upon connection, the system displayed:
+\begin{quote}
+Welcome to DigitalOcean's 1-Click Docker Droplet.  
+To keep this Droplet secure, the UFW firewall is enabled.  
+All ports are BLOCKED except 22 (SSH), 2375 (Docker) and 2376 (Docker).
+\end{quote}
+
+To confirm Docker installation:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+docker --version
+\end{minted}
+
+\section{Bugzilla Setup and Configuration}
+
+We created and edited a Docker Compose file at \texttt{/opt/bugzilla/docker-compose.yml}:
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{yaml}
+services:
+  db:
+    image: mariadb:10.5
+    container_name: bugzilla_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bugzilla
+      MYSQL_USER: bugzilla
+      MYSQL_PASSWORD: bugzilla123
+    volumes:
+      - db_data:/var/lib/mysql
+
+  bugzilla:
+    image: bugzilla/bugzilla-dev
+    container_name: bugzilla_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      DB_HOST: db
+      DB_DATABASE: bugzilla
+      DB_USER: bugzilla
+      DB_PASSWORD: bugzilla123
+    volumes:
+      - bugzilla_data:/var/www/html
+
+volumes:
+  db_data:
+  bugzilla_data:
+\end{minted}
+
+Once configured, we started both services:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+docker compose up -d
+docker compose ps
+\end{minted}
+
+\section{Verification}
+
+After successful startup, Bugzilla was accessible at:
+\begin{quote}
+\url{http://167.99.121.94/}
+\end{quote}
+
+We verified that both the \texttt{bugzilla\_app} and \texttt{bugzilla\_db} containers were active and persistent upon restart.
+
+Bugzilla was successfully deployed via Docker Compose using a MariaDB backend.  
+The instance is reachable publicly at port 80 and functions as expected.

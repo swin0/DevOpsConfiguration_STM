@@ -1,0 +1,66 @@
+\chapter{Overleaf Docker \\
+\small{\textit{-- Tamara Gonzalez Ibarra, Michelle Elias Flores, Sydney Winstead}}
+\index{itOverleafDocker} 
+\index{Chapter!itOverleafDocker}
+\label{Chapter::itOverleafDocker}}
+
+\section{Overview}
+This report details the process of deploying an \textbf{Overleaf Docker container} on DigitalOcean.  
+The deployment reused the same droplet and exposed Overleaf through port 3000 with a MongoDB backend.
+
+\section{Droplet Connection and Setup}
+
+We connected to our existing droplet via SSH:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+ssh root@167.99.121.94
+\end{minted}
+
+Then we created a dedicated Overleaf directory:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+mkdir -p /opt/overleaf
+cd /opt/overleaf
+\end{minted}
+
+\section{Docker Compose Configuration}
+
+We then created a new \texttt{docker-compose.yml} file:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{yaml}
+version: '3'
+
+services:
+  db:
+    image: mongo:4.4
+    container_name: overleaf-db
+    restart: always
+    volumes:
+      - db_data:/data/db
+
+  overleaf:
+    image: overleaf/overleaf:latest
+    container_name: overleaf
+    restart: always
+    ports:
+      - "3000:80"
+    environment:
+      - MONGO_URL=mongodb://db:27017/overleaf
+      - ROOT_URL=http://167.99.121.94:3000
+
+volumes:
+  db_data:
+\end{minted}
+
+After saving, we launched the service:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+docker-compose up -d
+\end{minted}
+
+\section{Verification}
+Once running, we confirmed Overleaf was accessible at:
+\begin{quote}
+\url{http://167.99.121.94:3000/}
+\end{quote}
+
+We confirmed both containers were up and communicating correctly using:
+\begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
+docker ps
+\end{minted}

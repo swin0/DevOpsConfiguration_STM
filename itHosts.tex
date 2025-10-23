@@ -1,0 +1,47 @@
+\chapter{Hosts \\
+\small{\textit{-- Tamara Gonzalez Ibarra}}
+\index{Hosts} 
+\index{Chapter!Hosts}
+\label{Chapter::Hosts}}
+
+In this chapter, the hosts that will be configured for the development environment are described. 
+The table below lists the host names along with their roles and permissions.
+
+\section{Hosts Table}
+
+\begin{longtable}{|l|l|p{5cm}|}
+\hline
+\textbf{Host Name} & \textbf{Role} & \textbf{Permissions} \\
+\hline
+\endfirsthead
+\multicolumn{3}{c}%
+{\tablename\ \thetable\ -- continued from previous page} \\
+\hline
+\textbf{Host Name} & \textbf{Role} & \textbf{Permissions} \\
+\hline
+\endhead
+\hline \multicolumn{3}{r}{\textit{Continued on next page}} \\
+\endfoot
+\hline
+\endlastfoot
+
+tamaragonzalez & Database Server & -rwxr-xr-x \\
+\hline
+dev-user1 & Application Server & -rwxr-x--- \\
+\hline
+dev-user2 & Web Server & -rw-r--r-- \\
+\hline
+admin & System Administrator & -rwx------ \\
+\hline
+backup & Backup Host & -rw------- \\
+\hline
+test-env & Testing Environment & -rwxrwxr-x \\
+\hline
+staging & Pre-Production Server & -rwxr-x--- \\
+\hline
+prod-main & Production Server & -rwxr----- \\
+\hline
+
+\end{longtable}
+
+
