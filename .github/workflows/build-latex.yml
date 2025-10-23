@@ -21,7 +21,7 @@ jobs:
       # Step 3: Inject version number into LaTeX file
       - name: Add version number
         run: |
-          sed -i "s/\\newcommand{\\version}{.*}/\\newcommand{\\version}{${{ env.CHANGE_ID }}}/" main.tex
+          sed -i "s/\\newcommand{\\version}{.*}/\\newcommand{\\version}{${{ env.CHANGE_ID }}}/" itManual.tex
 
       # Step 4: Compile LaTeX 
       - name: Set up LaTeX
