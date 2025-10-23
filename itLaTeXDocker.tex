@@ -6,52 +6,56 @@
 
 \section{Overview}
 
-This chapter demonstrates how to create a minimal Docker container capable of compiling \LaTeX{} documents using \texttt{TeX Live}. This setup mimics how Overleaf performs compilations in isolated environments. By using Docker, we can ensure reproducibility, portability, and isolation — essential for consistent document builds across different systems.
+This chapter demonstrates how to create a minimal Docker container capable of compiling \LaTeX{} documents using \texttt{TeX Live}. This setup mimics how Overleaf performs compilations in isolated environments. Using Docker ensures reproducibility, portability, and isolation — essential for consistent document builds across different systems.
 
 \section{Requirements}
 
-Before proceeding, we will ensure the Docker is installed and running on our system by running:
+Before proceeding, ensure Docker is installed and running:
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{bash}
 docker --version
 \end{minted}
 
-We will also need a simple \LaTeX{} document to compile, and a Dockerfile that defines the build environment.
+You will also need a simple \LaTeX{} document to compile and a Dockerfile that defines the build environment.
 
 \section{Minimal Project Structure}
 
-We start with a simple directory structure:
+We start with a simple directory structure (ASCII-safe):
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{text}
 latex-docker/
-├── Dockerfile
-└── main.tex
+|-- Dockerfile
+`-- main.tex
 \end{minted}
 
 \section{The LaTeX Document}
 
-The following is a minimal \texttt{main.tex} document that we will compile inside the container:
+Here is a minimal \texttt{main.tex} document (no \verb|\begin{document}| inside minted):
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{latex}
+\documentclass{article}
+\usepackage{lipsum}
 
 \begin{document}
+
 \section*{Hello from Docker \& TeX Live!}
 \lipsum[1]
+
 \end{document}
 \end{minted}
 
 \section{Dockerfile Explanation}
 
-The Dockerfile defines the environment needed to build and compile the document. We use a lightweight base image (Ubuntu) and install only the necessary TeX Live components.
+The Dockerfile defines the environment needed to build and compile the document:
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{docker}
 # Use a minimal base image
 FROM ubuntu:22.04
 
-# Set a noninteractive mode for installation
+# Set noninteractive mode for installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update packages and install TeX Live
+# Install TeX Live packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         texlive-latex-base \
@@ -66,23 +70,22 @@ RUN apt-get update && \
 WORKDIR /data
 
 # Command to compile LaTeX documents
-# This runs latexmk to automatically detect and compile .tex files
 ENTRYPOINT ["latexmk", "-pdf", "-interaction=nonstopmode"]
 \end{minted}
 
 \section{Building the Docker Image}
 
-Build the image with the following command from the same directory as your Dockerfile:
+Build the image from the same directory as your Dockerfile:
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{bash}
 docker build -t latex-docker .
 \end{minted}
 
-This command creates a Docker image named \texttt{latex-docker} that contains all required dependencies to compile \LaTeX{} documents.
+This creates a Docker image named \texttt{latex-docker} with all dependencies to compile \LaTeX{} documents.
 
 \section{Compiling the Document}
 
-Once built, you can compile your document by mounting your current directory and specifying your \texttt{.tex} file:
+Compile your document by mounting the current directory:
 
 \begin{minted}[fontsize=\small, bgcolor=lightgray!10]{bash}
 docker run --rm -v $(pwd):/data latex-docker main.tex
@@ -92,8 +95,4 @@ After execution, you should find a compiled \texttt{main.pdf} in your directory.
 
 \section{Conclusion}
 
-Using Docker with TeX Live provides a reproducible and portable environment for \LaTeX{} document compilation. This approach mirrors Overleaf's backend concept — an isolated container environment that ensures consistent and dependency-free document builds across systems.
-
-
-
-
+Using Docker with TeX Live provides a reproducible and portable environment for \LaTeX{} compilation. This mirrors Overleaf's backend concept: isolated container environments ensure consistent, dependency-free builds across systems.

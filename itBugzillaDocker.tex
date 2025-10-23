@@ -1,9 +1,11 @@
-\chapter{Bugzilla Docker \\
-\small{\textit{-- Tamara Gonzalez Ibarra, Sydney Winstead, Michelle Elias Flores}}
-\index{itBugzillaDocker} 
-\index{Chapter!itBugzillaDocker}
-}
+\chapter{Bugzilla Docker}
 \label{Chapter::itBugzillaDocker}
+\index{itBugzillaDocker}
+\index{Chapter!itBugzillaDocker}
+
+\begin{flushleft}
+\small{\textit{-- Tamara Gonzalez Ibarra, Sydney Winstead, Michelle Elias Flores}}
+\end{flushleft}
 
 \section{Overview}
 This report outlines the process of setting up a \textbf{Bugzilla Docker container} on a DigitalOcean droplet. The setup included creating a droplet with Docker preinstalled, connecting via SSH, configuring Bugzilla using Docker Compose, and verifying that the Bugzilla instance was running successfully.
@@ -18,6 +20,7 @@ ssh root@167.99.121.94
 \end{minted}
 
 Upon connection, the system displayed:
+
 \begin{quote}
 Welcome to DigitalOcean's 1-Click Docker Droplet.  
 To keep this Droplet secure, the UFW firewall is enabled.  
@@ -25,6 +28,7 @@ All ports are BLOCKED except 22 (SSH), 2375 (Docker) and 2376 (Docker).
 \end{quote}
 
 To confirm Docker installation:
+
 \begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
 docker --version
 \end{minted}
@@ -69,6 +73,7 @@ volumes:
 \end{minted}
 
 Once configured, we started both services:
+
 \begin{minted}[fontsize=\small, bgcolor=gray!5, linenos]{bash}
 docker compose up -d
 docker compose ps
@@ -77,6 +82,7 @@ docker compose ps
 \section{Verification}
 
 After successful startup, Bugzilla was accessible at:
+
 \begin{quote}
 \url{http://167.99.121.94/}
 \end{quote}
